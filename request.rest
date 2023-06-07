@@ -1,0 +1,22 @@
+POST http://localhost:3001/auth/register
+Content-Type: application/json
+
+{
+    "firstName": "Yanuar",
+    "lastName": "Fauzan",
+    "email": "yanuarisnain@gmail.com",
+    "password": "rahasia",
+    "friends": "",
+    "location": "fakeLocations",
+    "occupation": "fakeOccupation"
+}
+
+
+###
+POST http://localhost:3001/auth/login
+Content-Type: application/json
+
+{
+    "email": "yanuarisnain017@gmail.com",
+    "password": "rahasia"
+}

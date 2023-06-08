@@ -1,7 +1,7 @@
-import User from "../models/User";
+import User from "../models/User.js";
 
 // READ
-export const getUSer = async (req, res) => {
+export const getUser = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findById(id);
@@ -15,23 +15,23 @@ export const getUserFriends = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findById(id);
-        
+
         // mengambil informasi teman dari collection user
         // pada setiap iterasi, ID temen disimpan di variabel id
         // jadi data user/teman(yang lagi dikunjungi) berdasarkan dari id teman pada collection user yang lagi login akan di ambil dan ditampilkan
         const friends = await Promise.all(
             user.friends.map((id) => User.findById(id))
         );
-    
+
         // mengambil data teman satu row sesuai id berdasarkan urutan data nya
         const formattedFriends = friends.map(
-            ({ _id, firstName, lastName, occupation, location, picturePath}) => {
-            return { _id, firstName, lastName, occupation, location, picturePath };
-        }
+            ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+                return { _id, firstName, lastName, occupation, location, picturePath };
+            }
         );
         res.status(200).json(formattedFriends);
-    } catch (error) {
-        res.status(404).json({ message: error.message});
+    } catch (err) {
+        res.status(404).json({ message: err.message });
     }
 };
 
@@ -50,13 +50,13 @@ export const addRemoveFriend = async (req, res) => {
 
         // fitur tambah atau hapus teman
         // jika di collection user.friends ada friendId artinya sudah berteman jadi fungsi yang dijalankan menghapus teman
-        if(user.friends.includes(friendId)) {
+        if (user.friends.includes(friendId)) {
             // menghapus friendId dari collection user
             user.friends = friend.friends.filter((id) => id !== friendId);
             // menghapus friendId dari collection friend
             friend.friends = friend.friends.filter((id) => id !== id);
-        // jika di collection user.friends tidak ada friendId artinya tidak berteman jadi fungsi yang dijalankan menambahkan teman
-         } else {
+            // jika di collection user.friends tidak ada friendId artinya tidak berteman jadi fungsi yang dijalankan menambahkan teman
+        } else {
             // menambahkan friendId ke collection user
             user.friends.push(friendId);
             // menambahkan friendId ke collection friend
@@ -72,16 +72,16 @@ export const addRemoveFriend = async (req, res) => {
         const friends = await Promise.all(
             user.friends.map((id) => User.findById(id))
         );
-    
+
         const formattedFriends = friends.map(
-            ({ _id, firstName, lastName, occupation, location, picturePath}) => {
-            return { _id, firstName, lastName, occupation, location, picturePath };
-        }
+            ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+                return { _id, firstName, lastName, occupation, location, picturePath };
+            }
         );
 
         res.status(200).json(formattedFriends);
 
     } catch (err) {
-        res.status(404).json({ message: error.message});
+        res.status(404).json({ message: err.message });
     }
 }

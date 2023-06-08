@@ -12,6 +12,8 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import postsRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
+import { createPost } from "./controllers/posts.js";
+import { verifyToken } from "./middleware/auth.js";
 
 // CONFIGURATION
 
@@ -56,6 +58,7 @@ const upload = multer({ storage });
 // upload.single("picture") kita akan upload foto secara local ke dalam ./public/assets di line 36
 
 app.post("/auth/register", upload.single("picture"), register);
+app.post("/post", verifyToken, upload.single("picture"), createPost);
 
 
 // ROUTES

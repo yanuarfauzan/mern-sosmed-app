@@ -9,7 +9,8 @@ import helmet from "helmet";
 import multer from "multer";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
-import userRoutes from "./routes/user.js"
+import userRoutes from "./routes/user.js";
+import postsRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
 
 // CONFIGURATION
@@ -61,6 +62,7 @@ app.post("/auth/register", upload.single("picture"), register);
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("posts", postsRoutes)
 
 // MONGOOSE SETUP
 
